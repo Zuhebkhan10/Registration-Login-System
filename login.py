@@ -1,6 +1,6 @@
 # Import the tkinter  library
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, simpledialog
 
 # Set up the window
 root=tk.Tk()
@@ -30,6 +30,7 @@ password_label.pack()
 password_entry=tk.Entry(card,show="*",width=30,font=("Segoe UI",11),bd=1)
 password_entry.pack(pady=5)
 
+
 # Create the Login function
 def login():
     username=user_entry.get()
@@ -56,6 +57,35 @@ def register():
         f.write(username+":"+password + "\n")
     messagebox.showinfo("Success","Account created")
 
+# Create forgot password function
+def forgot_password():
+    username = user_entry.get()
+    try:
+        with open("users.txt", "r") as f:
+            users = f.readlines()
+    except:
+        messagebox.showerror("Error", "No users found")
+        return
+    user_found = False
+    updated_users = []
+    for user in users:
+        u, p = user.strip().split(":")
+        if u == username:
+            user_found = True
+            new_password = tk.simpledialog.askstring("Reset Password", "Enter new password:", show="*")
+            if new_password:
+                updated_users.append(f"{u}:{new_password}\n")
+                messagebox.showinfo("Success", "Password updated successfully")
+            else:
+                updated_users.append(user)
+        else:
+            updated_users.append(user)
+    if not user_found:
+        messagebox.showerror("Error", "Username not found")
+        return
+    with open("users.txt", "w") as f:
+        f.writelines(updated_users)
+
 # Create the Buttons
 login_btn=tk.Button(card,text="Login",width=20,bg="#4A90E2",fg="white",font=("Segoe UI",10),bd=0,command=login)
 login_btn.pack(pady=10)
@@ -63,6 +93,9 @@ login_btn.pack(pady=10)
 register_btn=tk.Button(card,text="Register",width=20,bg="#50c878",fg="white",font=("Segoe UI",10),bd=0,command=register)
 register_btn.pack()
 
+forgot_btn = tk.Button(card,text="Forgot Password?",bg="white",fg="#4A90E2",font=("Segoe UI", 9),bd=0,command=forgot_password
+)
+forgot_btn.pack(pady=5)
+
 # Run the Program
 root.mainloop()
-print(users)
