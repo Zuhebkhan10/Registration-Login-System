@@ -25,7 +25,7 @@ user_entry.pack(pady=5)
 
 # Create the password
 password_label=tk.Label(card,text="Password",bg="WHITE",font=("Segoe UI ",10))
-password_label.pack()
+password_label.pack()git
 
 password_entry=tk.Entry(card,show="*",width=30,font=("Segoe UI",11),bd=1)
 password_entry.pack(pady=5)
